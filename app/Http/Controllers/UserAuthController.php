@@ -31,9 +31,9 @@ class UserAuthController extends Controller
      * @return JsonResponse
      */
     public function login(LoginUserRequest $request){
-        $fields=$request->validate();
-        $user=User::where("email",'=',$fields['email']);
-        if(!$user or $user->password != Hash::make($fields['password'])){
+        $fields=$request->validated();
+        $user=User::where("email",'=',$fields['email'])->first();
+        if(!$user or !Hash::check($fields['password'],$user->password)){
             abort(401);
         }
 
