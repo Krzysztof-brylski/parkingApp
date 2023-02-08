@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('parkings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('users_id')->constrained('users');
             $table->string('address');
             $table->string('city');
             $table->string('localization');
