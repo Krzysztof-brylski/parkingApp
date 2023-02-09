@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\ParkingController;
+use App\Http\Controllers\PricesController;
 use App\Http\Controllers\UserAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,4 +25,5 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::post('/user/logout',[UserAuthController::class,'logout']);
     Route::apiResource('car', CarController::class);
     Route::apiResource('parking', ParkingController::class);
+    Route::apiResource('price', PricesController::class);
 });

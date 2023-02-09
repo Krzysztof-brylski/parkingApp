@@ -17,7 +17,7 @@ class Parking extends Model
     ];
 
     public function Prices(){
-        return $this->hasOne(Prices::class);
+        return $this->hasOne(Prices::class,'parkings_id');
     }
     public function Reservations(){
         return $this->hasMany(Reservation::class);
