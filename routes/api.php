@@ -3,6 +3,7 @@
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\ParkingController;
 use App\Http\Controllers\PricesController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\UserAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,4 +27,5 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::apiResource('car', CarController::class);
     Route::apiResource('parking', ParkingController::class);
     Route::apiResource('price', PricesController::class);
+    Route::apiResource('reservation', ReservationController::class)->except(['update', 'index']);
 });

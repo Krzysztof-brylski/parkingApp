@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cars_id')->constrained('cars');
-            $table->foreignId('parkings_id')->constrained('parkings');
-            $table->time('startTime');
-            $table->time('paidTime');
+            $table->foreignId('cars_id')->nullable()->constrained('cars');
+            $table->foreignId('parkings_id')->nullable()->constrained('parkings');
+            $table->string('timeZone');
+            $table->dateTime('startTime');
+            $table->dateTime('endTime');
             $table->timestamps();
         });
     }

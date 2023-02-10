@@ -11,13 +11,14 @@ class Reservation extends Model
     protected $fillable=[
         'cars_id',
         'parkings_id',
+        'timeZone',
         'startTime',
-        'paidTime',
+        'endTime',
     ];
     public function Car(){
-        return $this->belongsTo(Car::class);
+        return $this->belongsTo(Car::class,'cars_id');
     }
     public function Parking(){
-        return $this->belongsTo(Parking::class);
+        return $this->belongsTo(Parking::class,'parkings_id');
     }
 }

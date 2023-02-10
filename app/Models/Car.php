@@ -18,7 +18,7 @@ class Car extends Model
         return $this->belongsTo(User::class);
     }
     public function Reservations(){
-        return $this->hasMany(Reservation::class);
+        return $this->hasMany(Reservation::class,'cars_id');
     }
 
     use HasFactory;
