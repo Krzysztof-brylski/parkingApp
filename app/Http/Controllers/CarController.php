@@ -12,6 +12,18 @@ use Illuminate\Support\Facades\Auth;
 
 class CarController extends Controller
 {
+
+    public function __construct()
+    {
+        // Middleware only applied to these methods
+        $this->middleware('UserResourceOwnershipMiddelware')->only([
+            'show',
+            'destroy',
+            'update'
+        ]);
+    }
+
+
     /**
      * Display a listing of the resource.
      *

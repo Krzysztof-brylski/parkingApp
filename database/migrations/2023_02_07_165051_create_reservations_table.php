@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cars_id')->nullable()->constrained('cars');
             $table->foreignId('parkings_id')->nullable()->constrained('parkings');
+            $table->foreignId('users_id')->nullable()->constrained('users');
             $table->string('timeZone');
             $table->dateTime('startTime');
             $table->dateTime('endTime');

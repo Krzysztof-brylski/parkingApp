@@ -9,6 +9,7 @@ use App\Models\Parking;
 use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReservationService
@@ -40,6 +41,7 @@ class ReservationService
             ]);
             $reservation->Car()->associate($car);
             $reservation->Parking()->associate($parking);
+            $reservation->User()->associate(Auth::user());
             $reservation->save();
             $parking->makeReservation();
         });

@@ -11,6 +11,7 @@ class Reservation extends Model
     protected $fillable=[
         'cars_id',
         'parkings_id',
+        'users_id',
         'timeZone',
         'startTime',
         'endTime',
@@ -20,5 +21,8 @@ class Reservation extends Model
     }
     public function Parking(){
         return $this->belongsTo(Parking::class,'parkings_id');
+    }
+    public function User(){
+        return $this->belongsTo(User::class,'users_id');
     }
 }

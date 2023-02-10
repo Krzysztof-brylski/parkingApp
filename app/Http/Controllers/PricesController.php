@@ -11,6 +11,19 @@ use Illuminate\Http\Response;
 
 class PricesController extends Controller
 {
+
+
+    public function __construct()
+    {
+        // Middleware only applied to these methods
+        $this->middleware('UserResourceOwnershipMiddelware')->only([
+            'show',
+            'destroy',
+            'update'
+        ]);
+    }
+
+
     /**
      * Display a listing of the resource.
      *

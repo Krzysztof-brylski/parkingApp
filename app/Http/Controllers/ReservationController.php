@@ -14,6 +14,16 @@ use Illuminate\Support\Facades\Auth;
 class ReservationController extends Controller
 {
 
+    public function __construct()
+    {
+        // Middleware only applied to these methods
+        $this->middleware('UserResourceOwnershipMiddelware')->only([
+            'show',
+            'destroy'
+        ]);
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -36,18 +46,9 @@ class ReservationController extends Controller
     public function show(Reservation $reservation)
     {
 
-//        $startTime= Carbon::createFromFormat(
-//            'Y-m-d H:i',
-//            "2023-02-10 15:51"
-//        );
-//        dd($startTime->setTimezone("Europe/Warsaw")->toDateTimeString());
-        //todo make middleware for resource read permission
-        if(Auth::id() == $reservation->Car()->first()->users_id){
-            return Response()->json(
-                (new ReservationDTO($reservation))->toArray(),
-                200);
-        }
-        return  Response()->json("access deny",403);
+        return Response()->json(
+            (new ReservationDTO($reservation))->toArray(),
+            200);
     }
 
     /**
@@ -58,10 +59,7 @@ class ReservationController extends Controller
      */
     public function destroy(Reservation $reservation)
     {
-        if(Auth::id() == $reservation->Car()->first()->users_id){
-            (new ReservationService())->DeleteReservation($reservation);
-            return Response()->json("deleted",200);
-        }
-        return  Response()->json("access deny",403);
+        (new ReservationService())->DeleteReservation($reservation);
+        return Response()->json("deleted",200);
     }
 }
