@@ -13,17 +13,6 @@ use Illuminate\Support\Facades\Auth;
 class ParkingController extends Controller
 {
 
-
-    public function __construct()
-    {
-        // Middleware only applied to these methods
-        $this->middleware('UserResourceOwnershipMiddelware')->only([
-            'show',
-            'destroy',
-            'update'
-        ]);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +20,8 @@ class ParkingController extends Controller
      */
     public function index()
     {
-        return Response()->json(Parking::all()->toArray(),200);
+        $parkings=Auth::user()->Parkings->all()->toArray();
+        return Response()->json($parkings,200);
     }
 
     /**

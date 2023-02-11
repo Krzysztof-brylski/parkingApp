@@ -12,28 +12,6 @@ use Illuminate\Http\Response;
 class PricesController extends Controller
 {
 
-
-    public function __construct()
-    {
-        // Middleware only applied to these methods
-        $this->middleware('UserResourceOwnershipMiddelware')->only([
-            'show',
-            'destroy',
-            'update'
-        ]);
-    }
-
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        return Response()->json(Prices::all()->toArray(),200);
-    }
-
     /**
      * Store a newly created resource in storage.
      *

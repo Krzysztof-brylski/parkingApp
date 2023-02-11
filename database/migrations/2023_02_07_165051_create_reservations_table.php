@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\ReservationStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,6 +20,9 @@ return new class extends Migration
             $table->foreignId('parkings_id')->nullable()->constrained('parkings');
             $table->foreignId('users_id')->nullable()->constrained('users');
             $table->string('timeZone');
+            $table->enum('status',
+                [ReservationStatusEnum::ACTIVE, ReservationStatusEnum::AWAITING, ReservationStatusEnum::FINISHED]
+            );
             $table->dateTime('startTime');
             $table->dateTime('endTime');
             $table->timestamps();

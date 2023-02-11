@@ -22,10 +22,10 @@ use Illuminate\Support\Facades\Route;
 Route::post('/user/register',[UserAuthController::class,'register']);
 Route::post('/user/login',[UserAuthController::class,'login']);
 
-Route::middleware(['auth:sanctum'])->group(function(){
+Route::middleware(['auth:sanctum','UserResourceOwnershipMiddelware'])->group(function(){
     Route::post('/user/logout',[UserAuthController::class,'logout']);
     Route::apiResource('car', CarController::class);
     Route::apiResource('parking', ParkingController::class);
-    Route::apiResource('price', PricesController::class);
-    Route::apiResource('reservation', ReservationController::class)->except(['update', 'index']);
+    Route::apiResource('price', PricesController::class)->except(['index']);
+    Route::apiResource('reservation', ReservationController::class)->except(['update']);
 });

@@ -14,14 +14,19 @@ use Illuminate\Support\Facades\Auth;
 class ReservationController extends Controller
 {
 
-    public function __construct()
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function index()
     {
-        // Middleware only applied to these methods
-        $this->middleware('UserResourceOwnershipMiddelware')->only([
-            'show',
-            'destroy'
-        ]);
+        $cars=Auth::user()->Reservations()->with(['Car','Parking'])->get();
+        return Response()->json($cars,200);
     }
+
+
 
 
     /**

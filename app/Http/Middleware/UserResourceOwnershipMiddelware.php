@@ -17,6 +17,9 @@ class UserResourceOwnershipMiddelware
      */
     public function handle(Request $request, Closure $next)
     {
+        if(empty($parameterName=$request->route()->parameterNames)){
+            return $next($request);
+        }
         $parameterName=$request->route()->parameterNames[0];
         if( $request->route($parameterName)->users_id == Auth::id()){
             return $next($request);

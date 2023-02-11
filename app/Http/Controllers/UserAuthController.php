@@ -34,7 +34,7 @@ class UserAuthController extends Controller
         $fields=$request->validated();
         $user=User::where("email",'=',$fields['email'])->first();
         if(!$user or !Hash::check($fields['password'],$user->password)){
-            abort(401);
+            return Response()->json("auth required",401);
         }
 
         $result = (new UserService())->LoginUser($user);

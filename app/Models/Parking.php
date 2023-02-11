@@ -12,9 +12,16 @@ class Parking extends Model
       'address',
       'city',
       'localization',
+      'users_id',
       'parkingSpots',
       'availableParkingSpots'
     ];
+
+    protected $hidden=[
+      'users_id',
+      'parkingSpots',
+    ];
+
 
     public function makeReservation(){
         if( $this->availableParkingSpots>0){
