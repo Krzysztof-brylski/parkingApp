@@ -20,13 +20,14 @@ class ParkingService
     }
 
     public function UpdateParking(Parking $parking, array $fields){
+
         $parking->update([
-            'address'=> (!array_key_exists('registryPlate',$fields)?$parking->address : $fields['address']),
-            'city'=>(!array_key_exists('brand',$fields)?$parking->city : $fields['city']),
-            'localization'=>(!array_key_exists('color',$fields)?$parking->localization : $fields['localization']),
-            'parkingSpots'=>(!array_key_exists('color',$fields)?$parking->parkingSpots : $fields['parkingSpots']),
-            'availableParkingSpots'=>(!array_key_exists('color',$fields)?$parking->parkingSpots : $fields['parkingSpots']),
+            'address'=> (!array_key_exists('address',$fields) ? $parking->address : $fields['address']),
+            'city'=>(!array_key_exists('city',$fields) ? $parking->city : $fields['city']),
+            'localization'=>(!array_key_exists('localization',$fields)?$parking->localization : $fields['localization']),
+            'parkingSpots'=>(!array_key_exists('parkingSpots',$fields)?$parking->parkingSpots : $fields['parkingSpots']),
         ]);
+
         $parking->save();
     }
 }

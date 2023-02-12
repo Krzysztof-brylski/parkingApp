@@ -58,7 +58,7 @@ class ParkingController extends Controller
     public function update(ParkingUpdateRequest $request, Parking $parking)
     {
         $fields=$request->validated();
-        (new ParkingService())->UpdateParking($fields);
+        (new ParkingService())->UpdateParking($parking, $fields);
         return Response()->json("updated",200);
     }
 

@@ -3,8 +3,6 @@
 namespace Tests\Unit;
 use App\Models\Car;
 use App\Models\User;
-use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Tests\TestCase;
@@ -80,7 +78,7 @@ class CarTest extends TestCase
             'color'=>"blue",
         ]);
 
-        $response=$this->delete(route("car.update",["car"=>$car->id]));
+        $response=$this->delete(route("car.destroy",["car"=>$car->id]));
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing(Car::class,array(
