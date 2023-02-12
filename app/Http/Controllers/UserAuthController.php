@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserAuthController extends Controller
@@ -47,8 +48,21 @@ class UserAuthController extends Controller
      * @return JsonResponse
      */
     public function logout(){
-        auth()->user()->tokens()->delete();
+        $user=Auth::user();
+        $user->tokens()->delete();
+        Auth::guard('web')->logout();
         return Response()->json("Logged out",200);
     }
+
+    /**
+     * Deleting logged in user
+     * @return JsonResponse
+     */
+    public function delete(){
+        Auth::user()->delete();
+        auth()->user()->tokens()->delete();
+        return Response()->json("Deleted",200);
+    }
+
 
 }

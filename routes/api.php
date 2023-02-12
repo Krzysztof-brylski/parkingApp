@@ -24,6 +24,7 @@ Route::post('/user/login',[UserAuthController::class,'login']);
 
 Route::middleware(['auth:sanctum','UserResourceOwnershipMiddelware'])->group(function(){
     Route::post('/user/logout',[UserAuthController::class,'logout']);
+    Route::post('/user/delete',[UserAuthController::class,'delete']);
     Route::apiResource('car', CarController::class);
     Route::apiResource('parking', ParkingController::class);
     Route::apiResource('price', PricesController::class)->except(['index']);
