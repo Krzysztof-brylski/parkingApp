@@ -6,6 +6,7 @@ use App\Http\Requests\CarCreateRequest;
 use App\Http\Requests\CarUpdateRequest;
 use App\Models\Car;
 use App\Services\CarService;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
