@@ -2,7 +2,8 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\UserResourceOwnershipMiddelware;
+use App\Http\Middleware\CheckParkingPrices;
+use App\Http\Middleware\UserResourceOwnership;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -64,6 +65,6 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'UserResourceOwnershipMiddelware'=>UserResourceOwnershipMiddelware::class,
+        'UserResourceOwnership'=>UserResourceOwnership::class,
     ];
 }

@@ -39,6 +39,10 @@ class Parking extends Model
         $this->save();
         return "ok";
     }
+    public function hasPrices(){
+        return $this->Prices()->exists();
+    }
+
     public function Prices(){
         return $this->hasOne(Prices::class,'parkings_id');
     }

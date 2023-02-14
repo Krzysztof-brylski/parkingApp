@@ -40,6 +40,12 @@ class ReservationTest extends TestCase
             'availableParkingSpots'=>10
         ]);
 
+        $parking->Prices()->create([
+            'firstHour'=>1,
+            'nextHours'=>2,
+            'overTimeHours'=>3,
+        ]);
+
         $response=$this->post(route("reservation.store"),array(
             'car_id'=>$car->id,
             'parking_id'=>$parking->id,
@@ -54,6 +60,40 @@ class ReservationTest extends TestCase
             'timeZone'=>'Europe/Warsaw'
         ));
     }
+
+    public function test_reservation_on_parking_with_no_prices(){
+        $user=User::factory()->create();
+        Sanctum::actingAs(
+            $user
+        );
+        $car=Car::create([
+            'users_id'=>$user->id,
+            'registryPlate'=>"dw2312",
+            'brand'=>"volkswagen",
+            'color'=>"blue",
+        ]);
+        $parking=Parking::create([
+            'address'=>'test st',
+            'city'=>'wroclaw',
+            'localization'=>'[19.0021,18.9921]',
+            'users_id'=>$user->id,
+            'parkingSpots'=>10,
+            'availableParkingSpots'=>10
+        ]);
+
+        $response=$this->post(route("reservation.store"),array(
+            'car_id'=>$car->id,
+            'parking_id'=>$parking->id,
+            'timeZone'=>'Europe/Warsaw',
+            'startTime'=>"2024-01-01 12:12",
+            'paidTime'=>2,
+        ));
+        $response->assertStatus(422);
+
+
+    }
+
+
 
     public function test_reservation_delete()
     {

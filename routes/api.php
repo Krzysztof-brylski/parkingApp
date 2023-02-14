@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/user/register',[UserAuthController::class,'register']);
 Route::post('/user/login',[UserAuthController::class,'login']);
 
-Route::middleware(['auth:sanctum','UserResourceOwnershipMiddelware'])->group(function(){
+Route::middleware(['auth:sanctum','UserResourceOwnership'])->group(function(){
     Route::post('/user/logout',[UserAuthController::class,'logout']);
     Route::post('/user/delete',[UserAuthController::class,'delete']);
     Route::apiResource('car', CarController::class);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ParkingHavePrices;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +39,7 @@ class ReservationCreateRequest extends FormRequest
 
         return [
             'car_id'=>'required|exists:App\models\Car,id',
-            'parking_id'=>'required|exists:App\models\Parking,id',
+            'parking_id'=>['required','exists:App\models\Parking,id', new ParkingHavePrices()],
             'timeZone'=>'required|timezone',
             'startTime'=>"date|date_format:Y-m-d H:i|required|after_or_equal:".$this->validateTime(),
             'paidTime'=>'numeric|required',
