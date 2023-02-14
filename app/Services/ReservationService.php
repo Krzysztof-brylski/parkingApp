@@ -58,9 +58,9 @@ class ReservationService
 
     }
     public function DeleteReservation(Reservation $reservation){
-        DB::transaction(function () use($reservation){
+        db::transaction(function () use($reservation){
+            $reservation->Parking->cancelReservation();
             $reservation->delete();
-            $reservation->Parking()->cancelReservation();
         });
 
     }

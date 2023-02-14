@@ -24,6 +24,6 @@ class UserResourceOwnershipMiddelware
         if( $request->route($parameterName)->users_id == Auth::id()){
             return $next($request);
         }
-        return Request()->json("access deny",403);
+        abort(403);
     }
 }
