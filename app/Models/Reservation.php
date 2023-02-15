@@ -37,7 +37,10 @@ class Reservation extends Model
         return;
     }
 
-
+    public function Payment()
+    {
+        return $this->morphOne(Payment::class, 'paymentable');
+    }
 
     public function Car(){
         return $this->belongsTo(Car::class,'cars_id');

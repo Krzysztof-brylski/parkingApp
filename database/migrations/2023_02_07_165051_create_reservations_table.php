@@ -21,8 +21,9 @@ return new class extends Migration
             $table->foreignId('users_id')->nullable()->constrained('users');
             $table->string('timeZone');
             $table->enum('status',
-                [ReservationStatusEnum::ACTIVE, ReservationStatusEnum::AWAITING, ReservationStatusEnum::FINISHED]
-            );
+                [ReservationStatusEnum::ACTIVE, ReservationStatusEnum::PAYMENT_AWAITING,ReservationStatusEnum::PAYMENT_CANCEL,
+                    ReservationStatusEnum::AWAITING, ReservationStatusEnum::FINISHED]
+            )->default( ReservationStatusEnum::PAYMENT_AWAITING);
             $table->dateTime('startTime');
             $table->dateTime('endTime');
             $table->timestamps();

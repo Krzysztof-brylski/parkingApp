@@ -14,6 +14,14 @@ class Prices extends Model
       'overTimeHours',
     ];
 
+
+    public function calculatePrice($time){
+        if($time == 1){
+            return (1*(float)$this->firstHour);
+        }
+        return ((1*(float)$this->firstHour) + (($time-1)*(float)$this->nextHours));
+    }
+
     public function Parking(){
         return $this->belongsTo(Parking::class);
     }

@@ -13,7 +13,7 @@ use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 
 class ReservationTest extends TestCase
 {
-    use FastRefreshDatabase;
+    //use FastRefreshDatabase;
     /**
      * A basic unit test example.
      *

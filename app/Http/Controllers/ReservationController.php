@@ -38,8 +38,8 @@ class ReservationController extends Controller
     public function store(ReservationCreateRequest $request)
     {
         $fields=$request->validated();
-        (new ReservationService())->CreateReservation($fields);
-        return Response()->json("booked",201);
+        $reservation=(new ReservationService())->CreateReservation($fields);
+        return Response()->json(array("paymentUrl"=>url("http://127.0.0.1:8888/payment/{$reservation->Payment->token}")),201);
     }
 
     /**

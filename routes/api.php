@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\ParkingController;
+use App\Http\Controllers\PaymentStatusUpdateController;
 use App\Http\Controllers\PricesController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\UserAuthController;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/user/register',[UserAuthController::class,'register']);
 Route::post('/user/login',[UserAuthController::class,'login']);
+Route::post('/payment/{payment:token}',[PaymentStatusUpdateController::class,'updateStatus'])->name('paymentStatus.update');
 
 Route::middleware(['auth:sanctum','UserResourceOwnership'])->group(function(){
     Route::post('/user/logout',[UserAuthController::class,'logout']);
