@@ -23,7 +23,6 @@ class ReservationService
 
         $car = Car::where('id','=',$fields['car_id'])->first();
         $parking = Parking::where('id','=',$fields['parking_id'])->first();
-
         $startTime= Carbon::createFromFormat(
             'Y-m-d H:i',
             $fields['startTime'],

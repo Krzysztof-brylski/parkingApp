@@ -2,10 +2,14 @@
 
 namespace Tests\Unit;
 
+use App\Enum\PaymentStatusEnum;
+use App\Enum\ReservationStatusEnum;
 use App\Models\Car;
 use App\Models\Parking;
+use App\Models\Payment;
 use App\Models\Reservation;
 use App\Models\User;
+use App\Services\ReservationService;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -13,7 +17,7 @@ use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 
 class ReservationTest extends TestCase
 {
-    //use FastRefreshDatabase;
+    use FastRefreshDatabase;
     /**
      * A basic unit test example.
      *
@@ -59,6 +63,11 @@ class ReservationTest extends TestCase
             'parkings_id'=>$parking->id,
             'timeZone'=>'Europe/Warsaw'
         ));
+        $reservation=Reservation::where("cars_id",$car->id)->where("parkings_id",$parking->id)->first();
+        $this->assertDatabaseHas(Payment::class,array(
+            'paymentable_id'=>$reservation->id,
+            'paymentable_type'=>"App\Models\Reservation",
+        ));
     }
 
     public function test_reservation_on_parking_with_no_prices(){
@@ -93,6 +102,129 @@ class ReservationTest extends TestCase
 
     }
 
+    public function test_reservation_with_payment_success(){
+        $user=User::factory()->create();
+        Sanctum::actingAs(
+            $user
+        );
+        $car=Car::create([
+            'users_id'=>$user->id,
+            'registryPlate'=>"dw2312",
+            'brand'=>"volkswagen",
+            'color'=>"blue",
+        ]);
+        $parking=Parking::create([
+            'address'=>'test st',
+            'city'=>'wroclaw',
+            'localization'=>'[19.0021,18.9921]',
+            'users_id'=>$user->id,
+            'parkingSpots'=>10,
+            'availableParkingSpots'=>10
+        ]);
+        $parking->Prices()->create([
+            'firstHour'=>1,
+            'nextHours'=>2,
+            'overTimeHours'=>3,
+        ]);
+
+        $reservation=(new ReservationService())->CreateReservation(array(
+            'car_id'=>$car->id,
+            'parking_id'=>$parking->id,
+            'timeZone'=>'Europe/Warsaw',
+            'startTime'=>"2024-01-01 12:12",
+            'paidTime'=>2,
+        ));
+        $this->assertDatabaseHas(Reservation::class,array(
+            'id'=>$reservation->id,
+            'status'=>ReservationStatusEnum::PAYMENT_AWAITING,
+        ));
+
+        $this->assertDatabaseHas(Payment::class,array(
+            'paymentable_id'=>$reservation->id,
+            'paymentable_type'=>"App\Models\Reservation",
+            'status'=>PaymentStatusEnum::AWAITING,
+        ));
+        $token=$reservation->Payment->token;
+        $response=$this->post(route("paymentStatus.update",["payment"=>$token]),array(
+            "status"=>"success"
+        ));
+        $response->assertStatus(200);
+        $this->assertDatabaseHas(Reservation::class,array(
+            'id'=>$reservation->id,
+            'status'=>ReservationStatusEnum::AWAITING,
+        ));
+
+        $this->assertDatabaseHas(Payment::class,array(
+            'paymentable_id'=>$reservation->id,
+            'paymentable_type'=>"App\Models\Reservation",
+            'status'=>PaymentStatusEnum::SUCCESS,
+        ));
+
+
+
+    }
+
+    public function test_reservation_with_payment_canceled(){
+        $user=User::factory()->create();
+        Sanctum::actingAs(
+            $user
+        );
+        $car=Car::create([
+            'users_id'=>$user->id,
+            'registryPlate'=>"dw2312",
+            'brand'=>"volkswagen",
+            'color'=>"blue",
+        ]);
+        $parking=Parking::create([
+            'address'=>'test st',
+            'city'=>'wroclaw',
+            'localization'=>'[19.0021,18.9921]',
+            'users_id'=>$user->id,
+            'parkingSpots'=>10,
+            'availableParkingSpots'=>10
+        ]);
+        $parking->Prices()->create([
+            'firstHour'=>1,
+            'nextHours'=>2,
+            'overTimeHours'=>3,
+        ]);
+
+        $reservation=(new ReservationService())->CreateReservation(array(
+            'car_id'=>$car->id,
+            'parking_id'=>$parking->id,
+            'timeZone'=>'Europe/Warsaw',
+            'startTime'=>"2024-01-01 12:12",
+            'paidTime'=>2,
+        ));
+        $this->assertDatabaseHas(Reservation::class,array(
+            'id'=>$reservation->id,
+            'status'=>ReservationStatusEnum::PAYMENT_AWAITING,
+        ));
+
+        $this->assertDatabaseHas(Payment::class,array(
+            'paymentable_id'=>$reservation->id,
+            'paymentable_type'=>"App\Models\Reservation",
+            'status'=>PaymentStatusEnum::AWAITING,
+        ));
+        $token=$reservation->Payment->token;
+        $response=$this->post(route("paymentStatus.update",["payment"=>$token]),array(
+            "status"=>"canceled"
+        ));
+        $response->assertStatus(200);
+        $this->assertDatabaseHas(Reservation::class,array(
+            'id'=>$reservation->id,
+            'status'=>ReservationStatusEnum::PAYMENT_CANCEL,
+        ));
+
+        $this->assertDatabaseHas(Payment::class,array(
+            'paymentable_id'=>$reservation->id,
+            'paymentable_type'=>"App\Models\Reservation",
+            'status'=>PaymentStatusEnum::CANCEL,
+        ));
+
+
+
+    }
 
 
     public function test_reservation_delete()
